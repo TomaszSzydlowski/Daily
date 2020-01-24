@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Daily": {
+      "commandName": "Project",
+      "commandLineArgs": "s content"
+    }
+  }
+}

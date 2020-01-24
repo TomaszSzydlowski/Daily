@@ -1,6 +1,5 @@
 ﻿using System.Xml.Linq;
 using System;
-using System.Configuration;
 
 
 namespace Daily
@@ -9,30 +8,20 @@ namespace Daily
     {
         static void Main(string[] args)
         {
+            var fileDirectory = AppSettings.Read("FileDirectory");
 
-            XDocument xDoc = new XDocument(
-                    new XDeclaration("1.0", "utf-8", "yes"),
-                    new XElement("Root",
-                    new XElement("Task",
-                    new XAttribute("Data", "data"), "tresc zdania")
-                    )
-                    );
+            var xDoc = XDocument.Load(fileDirectory);
 
-            static string ReadSetting(string key)
+            if (args[0].Contains("s"))
             {
-                try
-                {
-                    var appSettings = ConfigurationManager.AppSettings;
-                    return appSettings[key];
-                }
-                catch (ConfigurationErrorsException)
-                {
-                    throw new Exception();
-                }
+                var time = DateTime.Now.ToString("g");
+                var content = args[1];
+
+                var task = new XElement("Task", new XAttribute("DateTime", time), content);
+
+                xDoc.Element("Root").Element("Tasks").Add(task);
+
             }
-
-            var fileDirectory = ReadSetting("FileDirectory");
-
 
             xDoc.Save(fileDirectory);
         }
