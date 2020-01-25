@@ -1,4 +1,5 @@
 ﻿using Daily.Actions;
+using Daily.Helpers;
 using System;
 
 namespace Daily.Controller
@@ -19,18 +20,23 @@ namespace Daily.Controller
             return instance;
         }
 
-        public BaseAction ChooseAction(string arg)
+        public void ChooseAction(IValidArg validArg)
         {
-            if (arg.Equals(Add, StringComparison.OrdinalIgnoreCase))
-            {
-                return AddTask.GetInstance();
-            }
-            else if (arg.Equals(Find, StringComparison.OrdinalIgnoreCase))
-            {
-                return FindTask.GetInstance();
-            }
+            var xDoc = GetXDocument.GetInstance().Get();
 
-            throw new ArgumentException(String.Format("{0} this argument is not supported. Use \" - help\" to list all arguments", arg));
+            if (validArg.Action.Equals(Add, StringComparison.OrdinalIgnoreCase))
+            {
+                var changedXDoc = AddTask.GetInstance().Add(xDoc, validArg.Content);
+                SaveXDocument.GetInstance().Save(changedXDoc);
+            }
+            else if (validArg.Action.Equals(Find, StringComparison.OrdinalIgnoreCase))
+            {
+                var founds = FindTask.GetInstance().Find(xDoc, validArg.Content);
+            }
+            else
+            {
+                throw new ArgumentException(String.Format("{0} this argument is not supported. Use \" - help\" to list all arguments", validArg.Action));
+            }
         }
     }
 }

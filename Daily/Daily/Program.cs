@@ -7,10 +7,8 @@ namespace Daily
     {
         static void Main(string[] args)
         {
-            var validArgs = new ArgValidator(args);
-
-            var action = MainController.GetInstance().ChooseAction(validArgs.Action);
-            action.Exec(validArgs.Content);
+            var validArgs = new ValidArg(args);
+            MainController.GetInstance().ChooseAction(validArgs);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Daily.Actions
 {
-    public class FindTask : BaseAction
+    public class FindTask
     {
         private static FindTask instance = new FindTask();
 
@@ -19,33 +19,17 @@ namespace Daily.Actions
             return instance;
         }
 
-        public override void Exec(string arg)
+        public List<string> Find(XDocument xDoc, string time)
         {
-            var xDoc = XDocument.Load(FilePath);
+            IEnumerable<XElement> result =
+                from el in xDoc.Descendants("task")
+                where (string)el.Attribute("time") == time
+                select el;
 
-            string[] searchCriteria = new string[] { "25/01/2020 13:06", "25/01/2020 13:09", "25/01/2020 13:08", "25/01/2020 13:19" , "25/01/2020 19:38" , "38"};
-
-            foreach (var item in searchCriteria)
-            {
-                DateTime startTime = DateTime.Now;
-
-                XElement root = XElement.Load(FilePath);
-                IEnumerable<XElement> tests =
-                    from el in root.Elements("task")
-                    where (string)el.Attribute("time") == item
-                    select el;
-                foreach (XElement el in tests)
-                    Console.WriteLine(el.Value);
-
-
-
-                DateTime stopTime = DateTime.Now;
-                TimeSpan roznica = stopTime - startTime;
-                Console.WriteLine("Czas pracy:" + roznica.TotalMilliseconds);
-            }
-            
-            Console.ReadLine();
+            return result.Select(n => n.Value).ToList();
 
         }
+
+
     }
 }

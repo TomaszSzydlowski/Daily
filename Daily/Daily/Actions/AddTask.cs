@@ -5,7 +5,7 @@ using System.Xml.Linq;
 namespace Daily
 {
 
-    public sealed class AddTask : BaseAction
+    public sealed class AddTask
     {
         private static AddTask instance = new AddTask();
 
@@ -19,23 +19,16 @@ namespace Daily
             return instance;
         }
 
-        public override void Exec(string arg)
+        public XDocument Add(XDocument xDoc, string arg)
         {
-            var xDoc = XDocument.Load(FilePath);
-
             var task = new XTaskRepo
             {
                 Content = arg
             };
 
-            for (int i = 0; i < 30000; i++)
-            {
-                xDoc.Element("tasks").Add(task.GetXElement());
-            }
-
             xDoc.Element("tasks").Add(task.GetXElement());
 
-            xDoc.Save(FilePath);
+            return xDoc;
         }
 
         //TODO:Do wezla tasks dodac dzien dd/mm/yyyy i zawsze dodawac ten wezel jesli jeszcze nie istnieje
