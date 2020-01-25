@@ -17,7 +17,7 @@ namespace Daily
         }
         private AppSettings() { }
 
-        public static string Read(string key)
+        public string Read(string key)
         {
             try
             {
