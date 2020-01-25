@@ -25,10 +25,16 @@ namespace Daily
 
             var task = new XTaskRepo
             {
-                Content = arg 
+                Content = arg
             };
 
+            for (int i = 0; i < 30000; i++)
+            {
+                xDoc.Element("tasks").Add(task.GetXElement());
+            }
+
             xDoc.Element("tasks").Add(task.GetXElement());
+
             xDoc.Save(FilePath);
         }
 
