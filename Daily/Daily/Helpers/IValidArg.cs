@@ -2,7 +2,7 @@
 {
     public interface IValidArg
     {
-        string Action { get; }
+        EActionMethod Action { get; }
         string Content { get; }
     }
 }

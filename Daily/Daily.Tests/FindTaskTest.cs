@@ -9,8 +9,9 @@ using System.Xml.Linq;
 namespace Daily.Tests
 {
     [TestFixture]
-    public class FindTaskTest:TestBase
+    public class FindTaskTest : TestBase
     {
+        private FindTask findTask;
         private const string DateTimePerformance = "25/01/2020 19:36";
         private const string Criteria = "25/01/2020 13:05";
 
@@ -19,7 +20,7 @@ namespace Daily.Tests
         [SetUp]
         public void Setup()
         {
-
+            findTask = FindTask.GetInstance();
         }
 
         private XDocument GetBigXML()
@@ -52,17 +53,17 @@ namespace Daily.Tests
         [Test]
         public void GetFindByAllDateTime_ReturnAllEqualValuesToCriteria()
         {
-            var founds = FindTask.GetInstance().Find(_xDoc, Criteria);
+            findTask.Exec(_xDoc, Criteria);
 
-            Assert.That(founds, Is.Not.Empty);
-            Assert.That(founds.Count, Is.EqualTo(1));
+            Assert.That(findTask.Result, Is.Not.Empty);
+            Assert.That(findTask.Result.Count, Is.EqualTo(1));
         }
 
         [Test]
         public void FindPerformance_Pin()
         {
             Assert.That(GetBigXML().Descendants(Task).Count(), Is.EqualTo(30001));
-            Assert.That(Period(() => FindTask.GetInstance().Find(GetBigXML(), DateTimePerformance)), Is.LessThanOrEqualTo(TimeSpan.FromSeconds(0.1)));
+            Assert.That(Period(() => findTask.Exec(GetBigXML(), DateTimePerformance)), Is.LessThanOrEqualTo(TimeSpan.FromSeconds(0.1)));
         }
     }
 }

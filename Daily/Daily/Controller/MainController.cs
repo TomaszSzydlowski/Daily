@@ -1,6 +1,6 @@
 ﻿using Daily.Actions;
 using Daily.Helpers;
-using System;
+using System.Xml.Linq;
 
 namespace Daily.Controller
 {
@@ -8,8 +8,7 @@ namespace Daily.Controller
     {
         private static MainController instance = new MainController();
 
-        private const string Add = "Add";
-        private const string Find = "Find";
+
 
         private MainController()
         {
@@ -20,23 +19,13 @@ namespace Daily.Controller
             return instance;
         }
 
-        public void ChooseAction(IValidArg validArg)
+        public IActionBase MakeAction(EActionMethod selectedAction)
         {
-            var xDoc = GetXDocument.GetInstance().Get();
+            IActionBase action;
+            var factory = new ActionFactory();
+            action = factory.CreateAction(selectedAction);
 
-            if (validArg.Action.Equals(Add, StringComparison.OrdinalIgnoreCase))
-            {
-                var changedXDoc = AddTask.GetInstance().Add(xDoc, validArg.Content);
-                SaveXDocument.GetInstance().Save(changedXDoc);
-            }
-            else if (validArg.Action.Equals(Find, StringComparison.OrdinalIgnoreCase))
-            {
-                var founds = FindTask.GetInstance().Find(xDoc, validArg.Content);
-            }
-            else
-            {
-                throw new ArgumentException(String.Format("{0} this argument is not supported. Use \" - help\" to list all arguments", validArg.Action));
-            }
+            return action;
         }
     }
 }

@@ -5,9 +5,11 @@ using System.Xml.Linq;
 
 namespace Daily.Actions
 {
-    public class FindTask
+    public class FindTask:IActionBase
     {
         private static FindTask instance = new FindTask();
+
+        public List<string> Result { get; private set; }
 
         private FindTask()
         {
@@ -19,17 +21,14 @@ namespace Daily.Actions
             return instance;
         }
 
-        public List<string> Find(XDocument xDoc, string time)
+        public void Exec(XDocument xDoc, string time)
         {
             IEnumerable<XElement> result =
                 from el in xDoc.Descendants("task")
                 where (string)el.Attribute("time") == time
                 select el;
 
-            return result.Select(n => n.Value).ToList();
-
+           Result= result.Select(n => n.Value).ToList();
         }
-
-
     }
 }

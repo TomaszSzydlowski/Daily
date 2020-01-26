@@ -1,13 +1,16 @@
-﻿using Daily.Model;
+﻿using Daily.Actions;
+using Daily.Model;
 using System;
 using System.Xml.Linq;
 
 namespace Daily
 {
 
-    public sealed class AddTask
+    public sealed class AddTask:IActionBase
     {
         private static AddTask instance = new AddTask();
+
+        public XDocument XDoc { get; private set; }
 
         private AddTask()
         {
@@ -19,7 +22,7 @@ namespace Daily
             return instance;
         }
 
-        public XDocument Add(XDocument xDoc, string arg)
+        public void Exec(XDocument xDoc, string arg)
         {
             var task = new XTaskRepo
             {
@@ -28,7 +31,7 @@ namespace Daily
 
             xDoc.Element("tasks").Add(task.GetXElement());
 
-            return xDoc;
+            XDoc = xDoc;
         }
 
         //TODO:Do wezla tasks dodac dzien dd/mm/yyyy i zawsze dodawac ten wezel jesli jeszcze nie istnieje
