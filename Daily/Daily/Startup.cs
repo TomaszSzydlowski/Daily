@@ -1,4 +1,5 @@
-﻿using Daily.Controller;
+﻿using Daily.Actions;
+using Daily.Controller;
 using Daily.Helpers;
 using System.Xml.Linq;
 
@@ -26,9 +27,9 @@ namespace Daily
 
             action.Exec(XDoc, validArg.Content);
 
-            if (XDoc.GetHashCode() != AddTask.GetInstance().XDoc.GetHashCode())
+            if (action.XDoc != null)
             {
-                SaveXDocument.GetInstance().Save(AddTask.GetInstance().XDoc);
+                SaveXDocument.GetInstance().Save(action.XDoc);
             }
         }
     }

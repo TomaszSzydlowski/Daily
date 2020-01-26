@@ -10,6 +10,7 @@ namespace Daily.Actions
         private static FindTask instance = new FindTask();
 
         public List<string> Result { get; private set; }
+        public XDocument XDoc { get ; set ; }
 
         private FindTask()
         {

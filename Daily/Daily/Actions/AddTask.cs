@@ -10,7 +10,7 @@ namespace Daily
     {
         private static AddTask instance = new AddTask();
 
-        public XDocument XDoc { get; private set; }
+        public XDocument XDoc { get; set; }
 
         private AddTask()
         {
