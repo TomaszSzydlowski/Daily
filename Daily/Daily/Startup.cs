@@ -22,7 +22,7 @@ namespace Daily
         internal void Go(string[] args)
         {
             var validArg = new ValidArg(args);
-            var action = MainController.GetInstance().MakeAction(validArg.Action);
+            var action = MainController.GetInstance().CreateAction(validArg.Action);
 
             action.Exec(XDoc, validArg.Content);
         }

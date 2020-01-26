@@ -18,7 +18,7 @@ namespace Daily.Controller
             return instance;
         }
 
-        public IActionBase MakeAction(EActionMethod selectedAction)
+        public IActionBase CreateAction(EActionMethod selectedAction)
         {
             IActionBase action;
             var factory = new ActionFactory();
