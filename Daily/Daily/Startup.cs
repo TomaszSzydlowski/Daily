@@ -25,6 +25,11 @@ namespace Daily
             var action = MainController.GetInstance().CreateAction(validArg.Action);
 
             action.Exec(XDoc, validArg.Content);
+
+            if (XDoc.GetHashCode() != AddTask.GetInstance().XDoc.GetHashCode())
+            {
+                SaveXDocument.GetInstance().Save(AddTask.GetInstance().XDoc);
+            }
         }
     }
 }
