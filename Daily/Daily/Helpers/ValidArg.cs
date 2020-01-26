@@ -13,8 +13,15 @@ namespace Daily.Helpers
 
         public ValidArg(string[] args)
         {
-            Action = GetSelectedAction(args[0]);
-            Content = args[1];
+            try
+            {
+                Action = GetSelectedAction(args[0]);
+                Content = args[1];
+            }
+            catch (IndexOutOfRangeException)
+            {
+                throw new ArgumentException("There aren't enough arguments. Give more arguments or use \" - help\" to list all supported arguments");
+            }
         }
 
         public EActionMethod GetSelectedAction(string arg)
@@ -29,7 +36,7 @@ namespace Daily.Helpers
             }
             else
             {
-                throw new ArgumentException(String.Format("{0} this argument is not supported. Use \" - help\" to list all arguments", arg));
+                throw new ArgumentException(String.Format("{0} this argument is not supported. Use \" - help\" to list all supported arguments", arg));
             }
         }
     }
