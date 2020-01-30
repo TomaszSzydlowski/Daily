@@ -1,6 +1,7 @@
 ﻿using Daily.Actions;
 using Daily.Controller;
 using Daily.Helpers;
+using System;
 using System.Xml.Linq;
 
 namespace Daily
@@ -20,10 +21,24 @@ namespace Daily
             return instance;
         }
 
-        internal void Go(string[] args)
+        public void Go(string[] args)
         {
             var validArg = new ValidArg(args);
-            var action = MainController.GetInstance().CreateAction(validArg.Action);
+
+            Action(validArg);
+            View(validArg);
+
+        }
+
+        private void View(IValidArg validArg)
+        {
+            var view = ViewController.GetInstance().CreateView(validArg.Action);
+            view.Show();
+        }
+
+        private void Action(IValidArg validArg)
+        {
+            var action = ActionController.GetInstance().CreateAction(validArg.Action);
 
             action.Exec(XDoc, validArg.Content);
 

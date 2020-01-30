@@ -7,19 +7,19 @@ namespace Daily.Controller
     {
         public virtual IActionBase CreateAction(EActionMethod method)
         {
-            IActionBase action = null;
+            IActionBase view = null;
             switch (method)
             {
                 case EActionMethod.ADD:
-                    action = AddTask.GetInstance();
+                    view = AddTask.GetInstance();
                     break;
                 case EActionMethod.FIND:
-                    action = FindTask.GetInstance();
+                    view = FindTask.GetInstance();
                     break;
                 default:
                     break;
             }
-            return action;
+            return view;
         }
     }
 }

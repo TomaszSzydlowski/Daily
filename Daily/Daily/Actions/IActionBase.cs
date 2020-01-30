@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using Daily.View;
+using System.Xml.Linq;
 
 namespace Daily.Actions
 {
@@ -6,6 +7,6 @@ namespace Daily.Actions
     {
         XDocument XDoc { get; set; }
 
-        public void Exec(XDocument xDoc,string arg);
+        void Exec(XDocument xDoc,string arg);
     }
 }

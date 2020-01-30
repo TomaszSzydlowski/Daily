@@ -3,17 +3,17 @@ using Daily.Helpers;
 
 namespace Daily.Controller
 {
-    public sealed class MainController
+    public sealed class ActionController
     {
-        private static MainController instance = new MainController();
+        private static ActionController instance = new ActionController();
 
 
 
-        private MainController()
+        private ActionController()
         {
 
         }
-        public static MainController GetInstance()
+        public static ActionController GetInstance()
         {
             return instance;
         }

@@ -1,5 +1,6 @@
 ﻿using Daily.Actions;
 using Daily.Model;
+using Daily.View;
 using System;
 using System.Xml.Linq;
 
@@ -24,7 +25,7 @@ namespace Daily
 
         public void Exec(XDocument xDoc, string arg)
         {
-            var task = new XTaskRepo
+            var task = new TaskRepo
             {
                 Content = arg
             };
