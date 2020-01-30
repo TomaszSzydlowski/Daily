@@ -38,8 +38,8 @@ namespace Daily.Tests
                 addTask.Exec(xDocNew, content);
             }
             var xDocAfter = addTask.XDoc.Descendants(Task).Count();
-
-            Assert.That(xDocAfter, Is.EqualTo(length+1));
+            var numberOfExistingTasks = 2;
+            Assert.That(xDocAfter, Is.EqualTo(length+ numberOfExistingTasks));
         }
     }
 }

@@ -33,8 +33,5 @@ namespace Daily
 
             XDoc = xDoc;
         }
-
-        //TODO:Do wezla tasks dodac dzien dd/mm/yyyy i zawsze dodawac ten wezel jesli jeszcze nie istnieje
-
     }
 }
