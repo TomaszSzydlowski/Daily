@@ -23,7 +23,10 @@ namespace Daily
 
         public void Save(XDocument xDoc)
         {
-            xDoc.Save(FilePath);
+            if (xDoc != null)
+            {
+                xDoc.Save(FilePath);
+            }
         }
     }
 }

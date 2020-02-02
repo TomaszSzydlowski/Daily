@@ -6,7 +6,7 @@ namespace Daily
     {
         static void Main(string[] args)
         {
-            Startup.GetInstance().Go(args);
+            MainController.GetInstance().Start(args);
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using Daily.Helpers;
-using Daily.Model;
-using System;
 using System.Xml.Linq;
 
 namespace Daily

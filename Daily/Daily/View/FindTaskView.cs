@@ -1,7 +1,7 @@
 ﻿using Daily.Actions;
+using Daily.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Daily.View
 {
@@ -19,15 +19,13 @@ namespace Daily.View
             return instance;
         }
 
-        public void Show()
+        public void Show(List<TaskRepo> taskRepos)
         {
-            var findResults = FindTask.GetInstance().Result;
-
-            foreach (var findResult in findResults)
+            foreach (var taskRepo in taskRepos)
             {
-                Console.Write(findResult.DataTime);
+                Console.Write(taskRepo.DataTime);
                 Console.Write("\t");
-                Console.WriteLine(findResult.Content);
+                Console.WriteLine(taskRepo.Content);
             }
 
             Console.ReadKey();

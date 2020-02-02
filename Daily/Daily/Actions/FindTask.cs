@@ -11,10 +11,8 @@ namespace Daily.Actions
     {
         private const string Task = "task";
         private const string Time = "time";
-        private static FindTask instance = new FindTask();
 
-        public List<TaskRepo> Result { get; private set; }
-        public XDocument XDoc { get; set; }
+        private static FindTask instance = new FindTask();
 
         private FindTask()
         {
@@ -26,16 +24,23 @@ namespace Daily.Actions
             return instance;
         }
 
-        public void Exec(XDocument xDoc, string time)
+        public PostActionRepo Exec(XDocument xDoc, string time)
         {
-            IEnumerable<XElement> result =
+            IEnumerable<XElement> XElementsFilterByTime =
                 from el in xDoc.Descendants(Task)
                 from attr in el.Attributes()
                 where attr.Name.ToString().Equals(Time)
                 where attr.Value.ToString().Contains(time)
                 select el;
 
-            Result = result.Select(n => new TaskRepo { Content = n.Value, DataTime = n.Attribute(Time).ToString() }).ToList();
+            var taskRepos = XElementsFilterByTime.Select(n => new TaskRepo { Content = n.Value, DataTime = n.Attribute(Time).ToString() }).ToList();
+
+            var postActionRepo = new PostActionRepo()
+            {
+                TaskRepos = taskRepos
+            };
+
+            return postActionRepo;
         }
     }
 }

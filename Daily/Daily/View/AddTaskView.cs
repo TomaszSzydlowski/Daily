@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Daily.Model;
+using System;
+using System.Collections.Generic;
 
 namespace Daily.View
 {
@@ -16,7 +18,7 @@ namespace Daily.View
             return instance;
         }
 
-        public void Show()
+        public void Show(List<TaskRepo> taskRepos)
         {
             Console.WriteLine("[ADDED]");
         }

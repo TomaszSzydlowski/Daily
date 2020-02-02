@@ -1,12 +1,12 @@
-﻿using Daily.View;
+﻿using Daily.Model;
+using Daily.View;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Daily.Actions
 {
     public interface IActionBase
     {
-        XDocument XDoc { get; set; }
-
-        void Exec(XDocument xDoc,string arg);
+        PostActionRepo Exec(XDocument xDoc,string arg);
     }
 }
