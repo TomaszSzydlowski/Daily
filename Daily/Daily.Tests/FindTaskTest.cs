@@ -50,14 +50,6 @@ namespace Daily.Tests
             return timer.Elapsed;
         }
 
-        [Test]
-        public void GetFindByAllDateTime_ReturnAllEqualValuesToCriteria()
-        {
-            findTask.Exec(_xDoc, Criteria);
-
-            Assert.That(findTask.Result, Is.Not.Empty);
-            Assert.That(findTask.Result.Count, Is.EqualTo(1));
-        }
 
         [Test]
         [TestCase("25")]
@@ -65,12 +57,13 @@ namespace Daily.Tests
         [TestCase("2019")]
         [TestCase("25/01")]
         [TestCase("1/2020")]
+        [TestCase("25/01/2020 13:05")]
         public void GetTaskByDayMonthYear_ReturnAllEqualValuesToCriteria(string arg)
         {
-            findTask.Exec(_xDoc, Criteria);
+            var postAction = findTask.Exec(_xDoc, Criteria);
 
-            Assert.That(findTask.Result, Is.Not.Empty);
-            Assert.That(findTask.Result.Count, Is.EqualTo(1));
+            Assert.That(postAction.TaskRepos, Is.Not.Empty);
+            Assert.That(postAction.TaskRepos.Count, Is.EqualTo(1));
         }
 
         [Test]

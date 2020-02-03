@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
+﻿using Daily.Model;
+using NUnit.Framework;
 using System;
-using System.IO;
 using System.Linq;
 
 namespace Daily.Tests
@@ -21,8 +21,9 @@ namespace Daily.Tests
         public void AddNewTask_XDocNewIsBigger()
         {
             var xDocBefore = _xDoc.Descendants(Task).Count();
-            addTask.Exec(_xDoc, content);
-            var xDocAfter = addTask.XDoc.Descendants(Task).Count();
+            var postAction = addTask.Exec(_xDoc, content);
+            var xDocAfter = postAction.XDoc.Descendants(Task).Count();
+
 
             Assert.That(xDocBefore, Is.Not.EqualTo(xDocAfter));
         }
@@ -33,13 +34,19 @@ namespace Daily.Tests
             var xDocNew = _xDoc;
             var rnd = new Random();
             int length = rnd.Next(1, 10);
+
+            var postAction = new PostActionRepo()
+            {
+                XDoc = _xDoc
+            };
             for (int i = 0; i < length; i++)
             {
-                addTask.Exec(xDocNew, content);
+                postAction = addTask.Exec(postAction.XDoc, content);
             }
-            var xDocAfter = addTask.XDoc.Descendants(Task).Count();
+
+            var xDocAfter = postAction.XDoc.Descendants(Task).Count();
             var numberOfExistingTasks = 2;
-            Assert.That(xDocAfter, Is.EqualTo(length+ numberOfExistingTasks));
+            Assert.That(xDocAfter, Is.EqualTo(length + numberOfExistingTasks));
         }
     }
 }
