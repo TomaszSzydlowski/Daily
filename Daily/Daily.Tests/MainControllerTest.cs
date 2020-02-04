@@ -10,12 +10,12 @@ namespace Daily.Tests
     [TestFixture]
     public class MainControllerTest
     {
-        private MainController mainController;
+        private ActionController mainController;
 
         [SetUp]
         public void Setup()
         {
-            mainController = MainController.GetInstance();
+            mainController = ActionController.GetInstance();
         }
 
         [Test]

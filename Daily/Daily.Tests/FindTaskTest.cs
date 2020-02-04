@@ -13,7 +13,7 @@ namespace Daily.Tests
     {
         private FindTask findTask;
         private const string DateTimePerformance = "25/01/2020 19:36";
-        private const string Criteria = "25/01/2020 13:05";
+        private string Criteria = "25/01/2020 13:05";
 
         public string DateTime => System.DateTime.Now.ToString("g");
 
@@ -50,13 +50,20 @@ namespace Daily.Tests
             return timer.Elapsed;
         }
 
-        [Test]
-        public void GetFindByAllDateTime_ReturnAllEqualValuesToCriteria()
-        {
-            findTask.Exec(_xDoc, Criteria);
 
-            Assert.That(findTask.Result, Is.Not.Empty);
-            Assert.That(findTask.Result.Count, Is.EqualTo(1));
+        [Test]
+        [TestCase("25")]
+        [TestCase("12")]
+        [TestCase("2019")]
+        [TestCase("25/01")]
+        [TestCase("1/2020")]
+        [TestCase("25/01/2020 13:05")]
+        public void GetTaskByDayMonthYear_ReturnAllEqualValuesToCriteria(string arg)
+        {
+            var postAction = findTask.Exec(_xDoc, Criteria);
+
+            Assert.That(postAction.TaskRepos, Is.Not.Empty);
+            Assert.That(postAction.TaskRepos.Count, Is.EqualTo(1));
         }
 
         [Test]
