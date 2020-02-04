@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 namespace Daily.View
 {
-    public sealed class AddTaskView: IViewBase
+    public sealed class AddTaskView: ViewBase, IViewBase
     {
+        private const string ADDED = "ADDED";
         private static AddTaskView instance = new AddTaskView();
 
         private AddTaskView()
@@ -20,7 +21,17 @@ namespace Daily.View
 
         public void Show(List<TaskRepo> taskRepos)
         {
-            Console.WriteLine("[ADDED]");
+            foreach (var taskRepo in taskRepos)
+            {
+                ConsoleWriteWithColorAndBrackets(ADDED, ConsoleColor.Green);
+                ConsoleTab();
+
+                Console.Write(taskRepo.CurrentDateTime);
+                ConsoleSpace();
+                ConsoleDash();
+                ConsoleSpace();
+                Console.WriteLine(taskRepo.Content);
+            }
         }
     }
 }

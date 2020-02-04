@@ -1,6 +1,4 @@
 ﻿using Daily.Model;
-using Daily.View;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -33,7 +31,11 @@ namespace Daily.Actions
                 where attr.Value.ToString().Contains(time)
                 select el;
 
-            var taskRepos = XElementsFilterByTime.Select(n => new TaskRepo { Content = n.Value, DataTime = n.Attribute(Time).ToString() }).ToList();
+            var taskRepos = XElementsFilterByTime.Select(n => new TaskRepo 
+            { 
+                Content = n.Value, 
+                DataTime = n.Attribute(Time).Value
+            }).ToList();
 
             var postActionRepo = new PostActionRepo()
             {
