@@ -39,6 +39,7 @@ namespace Daily.Tests
             {
                 AddTask.GetInstance().GetType().ToString(),
                 FindTasks.GetInstance().GetType().ToString(),
+                FindYesterdayTasks.GetInstance().GetType().ToString(),
             };
 
             string message = string.Empty;
