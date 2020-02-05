@@ -7,6 +7,6 @@ namespace Daily.Actions
 {
     public interface IActionBase
     {
-        PostActionRepo Exec(XDocument xDoc,string arg);
+        PostActionRepo Exec(XDocument xDoc, string arg);
     }
 }

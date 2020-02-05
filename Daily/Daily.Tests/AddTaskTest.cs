@@ -31,7 +31,6 @@ namespace Daily.Tests
         [Test]
         public void AddNewTask_Random_XDocNewCount()
         {
-            var xDocNew = _xDoc;
             var rnd = new Random();
             int length = rnd.Next(1, 10);
 

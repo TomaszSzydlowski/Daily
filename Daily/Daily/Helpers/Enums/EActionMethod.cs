@@ -4,5 +4,6 @@
     {
         ADD,
         FIND,
+        FINDYESTERDAY,
     }
 }

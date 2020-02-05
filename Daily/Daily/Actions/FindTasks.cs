@@ -5,19 +5,19 @@ using System.Xml.Linq;
 
 namespace Daily.Actions
 {
-    public sealed class FindTask : IActionBase
+    public sealed class FindTasks : IActionBase
     {
-        private const string Task = "task";
-        private const string Time = "time";
+        private const string TASK = "task";
+        private const string TIME = "time";
 
-        private static FindTask instance = new FindTask();
+        private static FindTasks instance = new FindTasks();
 
-        private FindTask()
+        private FindTasks()
         {
 
         }
 
-        public static FindTask GetInstance()
+        public static FindTasks GetInstance()
         {
             return instance;
         }
@@ -25,16 +25,16 @@ namespace Daily.Actions
         public PostActionRepo Exec(XDocument xDoc, string time)
         {
             IEnumerable<XElement> XElementsFilterByTime =
-                from el in xDoc.Descendants(Task)
+                from el in xDoc.Descendants(TASK)
                 from attr in el.Attributes()
-                where attr.Name.ToString().Equals(Time)
+                where attr.Name.ToString().Equals(TIME)
                 where attr.Value.ToString().Contains(time)
                 select el;
 
             var taskRepos = XElementsFilterByTime.Select(n => new TaskRepo 
             { 
                 Content = n.Value, 
-                DataTime = n.Attribute(Time).Value
+                DataTime = n.Attribute(TIME).Value
             }).ToList();
 
             var postActionRepo = new PostActionRepo()

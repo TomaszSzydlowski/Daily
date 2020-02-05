@@ -2,7 +2,7 @@
   "profiles": {
     "Daily": {
       "commandName": "Project",
-      "commandLineArgs": "find 04/02"
+      "commandLineArgs": "find -y"
     }
   }
 }

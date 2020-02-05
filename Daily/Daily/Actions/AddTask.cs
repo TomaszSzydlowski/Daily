@@ -8,7 +8,7 @@ namespace Daily
 
     public sealed class AddTask : IActionBase
     {
-        private const string Tasks = "tasks";
+        private const string TASKS = "tasks";
         private static AddTask instance = new AddTask();
 
         private AddTask()
@@ -28,7 +28,7 @@ namespace Daily
                 Content = arg
             };
 
-            xDoc.Element(Tasks).Add(task.GetXElement());
+            xDoc.Element(TASKS).Add(task.GetXElement());
             var taskRepos = new List<TaskRepo>() { task };
 
             var postActionRepo = new PostActionRepo()

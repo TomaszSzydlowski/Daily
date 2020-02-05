@@ -29,7 +29,7 @@ namespace Daily.Tests
         public void CreateAction_ReturnFindTaskAction()
         {
             var method = EActionMethod.FIND;
-            Assert.IsInstanceOf<FindTask>(mainController.CreateAction(method));
+            Assert.IsInstanceOf<FindTasks>(mainController.CreateAction(method));
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace Daily.Tests
             var actionBases = new List<string>()
             {
                 AddTask.GetInstance().GetType().ToString(),
-                FindTask.GetInstance().GetType().ToString(),
+                FindTasks.GetInstance().GetType().ToString(),
             };
 
             string message = string.Empty;

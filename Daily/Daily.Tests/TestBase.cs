@@ -17,6 +17,6 @@ namespace Daily.Tests
         }
 
         protected const string Task = "task";
-        protected const string Time = "time";
+        protected const string TIME = "time";
     }
 }

@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 namespace Daily.View
 {
-    public sealed class FindTaskView : ViewBase, IViewBase
+    public sealed class FindYesterdayTasks : ViewBase, IViewBase
     {
         private const string FOUND = "FOUND";
-        private static FindTaskView instance = new FindTaskView();
+        private static FindYesterdayTasks instance = new FindYesterdayTasks();
 
-        private FindTaskView()
+        private FindYesterdayTasks()
         {
 
         }
 
-        public static FindTaskView GetInstance()
+        public static FindYesterdayTasks GetInstance()
         {
             return instance;
         }

@@ -11,16 +11,16 @@ namespace Daily.Tests
     [TestFixture]
     public class FindTaskTest : TestBase
     {
-        private FindTask findTask;
+        private FindTasks findTask;
         private const string DateTimePerformance = "25/01/2020 19:36";
         private string Criteria = "25/01/2020 13:05";
 
-        public string DateTime => System.DateTime.Now.ToString("g");
+        public string Time => DateTime.Now.ToString("g");
 
         [SetUp]
         public void Setup()
         {
-            findTask = FindTask.GetInstance();
+            findTask = FindTasks.GetInstance();
         }
 
         private XDocument GetBigXML()
@@ -30,14 +30,14 @@ namespace Daily.Tests
 
             for (int i = 0; i < 15000; i++)
             {
-                xDoc.Element("tasks").Add(new XElement(Task, new XAttribute(Time, DateTime), "Content"));
+                xDoc.Element("tasks").Add(new XElement(Task, new XAttribute(TIME, Time), "Content"));
             }
 
-            xDoc.Element("tasks").Add(new XElement(Task, new XAttribute(Time, DateTime), DateTimePerformance));
+            xDoc.Element("tasks").Add(new XElement(Task, new XAttribute(TIME, Time), DateTimePerformance));
 
             for (int i = 0; i < 15000; i++)
             {
-                xDoc.Element("tasks").Add(new XElement(Task, new XAttribute(Time, DateTime), "Content"));
+                xDoc.Element("tasks").Add(new XElement(Task, new XAttribute(TIME, Time), "Content"));
             }
 
             return xDoc;
