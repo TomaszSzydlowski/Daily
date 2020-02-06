@@ -19,7 +19,7 @@ namespace Daily.View
             return instance;
         }
 
-        public void Show(List<TaskRepo> taskRepos)
+        public override void Show(List<TaskRepo> taskRepos)
         {
             foreach (var taskRepo in taskRepos)
             {

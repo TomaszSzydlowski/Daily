@@ -1,5 +1,4 @@
-﻿using Daily.Actions;
-using Daily.Helpers;
+﻿using Daily.Helpers;
 using Daily.View;
 
 namespace Daily.Controller
@@ -7,8 +6,6 @@ namespace Daily.Controller
     public sealed class ViewController
     {
         private static ViewController instance = new ViewController();
-
-
 
         private ViewController()
         {
@@ -24,7 +21,6 @@ namespace Daily.Controller
             IViewBase view;
             var factory = new ViewFactory();
             view = factory.CreateView(selectedAction);
-
 
             return view;
         }

@@ -17,7 +17,10 @@ namespace Daily.Controller
                     view = FindTasksView.GetInstance();
                     break;
                 case EActionMethod.FINDYESTERDAY:
-                    view = FindYesterdayTasks.GetInstance();
+                    view = FindTasksView.GetInstance();
+                    break;
+                case EActionMethod.FINDTODAY:
+                    view = FindTasksView.GetInstance();
                     break;
                 default:
                     break;

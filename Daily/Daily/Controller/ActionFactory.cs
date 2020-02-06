@@ -19,6 +19,9 @@ namespace Daily.Controller
                 case EActionMethod.FINDYESTERDAY:
                     action = FindYesterdayTasks.GetInstance();
                     break;
+                case EActionMethod.FINDTODAY:
+                    action = FindTodayTasks.GetInstance();
+                    break;
                 default:
                     break;
             }

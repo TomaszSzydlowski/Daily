@@ -5,5 +5,6 @@
         ADD,
         FIND,
         FINDYESTERDAY,
+        FINDTODAY,
     }
 }

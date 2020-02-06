@@ -2,42 +2,61 @@
 
 namespace Daily.Helpers
 {
-    public partial class ValidArg : IValidArg
+    public sealed class ValidArg : IValidArg
     {
         public string Content { get; private set; }
         public EActionMethod Action { get; private set; }
 
-        private const string Add = "Add";
-        private const string Find = "Find";
-        private const string FindYesterday = "-y";
+        private const string ADD = "Add";
+        private const string FIND = "Find";
+        private const string FINDYESTERDAY = "-y";
+        private const string FINDTODAY = "-t";
 
-        public ValidArg(string[] args)
+        private ValidArg() { }
+
+        private static ValidArg instance = new ValidArg();
+
+
+        public static ValidArg GetInstance()
         {
+            return instance;
+        }
+
+        public static ValidArg Run(string[] args)
+        {
+            var validArg = GetInstance();
+
             try
             {
-                Action = GetSelectedAction(args);
-                Content = GetContent(args[args.Length - 1]);
+                validArg.Action = GetSelectedAction(args);
+                validArg.Content = GetContent(args[args.Length - 1]);
             }
             catch (IndexOutOfRangeException)
             {
                 throw new ArgumentException("There aren't enough arguments. Give more arguments or use \" - help\" to list all supported arguments");
             }
+
+            return validArg;
         }
 
-        public EActionMethod GetSelectedAction(string[] arg)
+        private static EActionMethod GetSelectedAction(string[] arg)
         {
             var firstArg = arg[0];
             var secondArg = arg[1];
 
-            if (firstArg.Equals(Add, StringComparison.OrdinalIgnoreCase))
+            if (firstArg.Equals(ADD, StringComparison.OrdinalIgnoreCase))
             {
                 return EActionMethod.ADD;
             }
-            else if (firstArg.Equals(Find, StringComparison.OrdinalIgnoreCase))
+            else if (firstArg.Equals(FIND, StringComparison.OrdinalIgnoreCase))
             {
-                if (secondArg.Equals(FindYesterday, StringComparison.OrdinalIgnoreCase))
+                if (secondArg.Equals(FINDYESTERDAY, StringComparison.OrdinalIgnoreCase))
                 {
                     return EActionMethod.FINDYESTERDAY;
+                }
+                if (secondArg.Equals(FINDTODAY, StringComparison.OrdinalIgnoreCase))
+                {
+                    return EActionMethod.FINDTODAY;
                 }
                 return EActionMethod.FIND;
             }
@@ -47,7 +66,7 @@ namespace Daily.Helpers
             }
         }
 
-        private string GetContent(string lastArg)
+        private static string GetContent(string lastArg)
         {
             return lastArg.Contains('-') ? null : lastArg;
         }

@@ -23,7 +23,7 @@ namespace Daily
 
         public void Start(string[] args)
         {
-            var validArg = new ValidArg(args);
+            var validArg = ValidArg.Run(args);
             var postAction = Action(validArg);
 
             Save(postAction.XDoc);
