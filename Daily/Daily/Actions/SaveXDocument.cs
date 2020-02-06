@@ -1,6 +1,8 @@
-﻿using Daily.Helpers;
+﻿using Daily.Cryptography;
+using Daily.Helpers;
 using Daily.Model;
 using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Daily
@@ -8,8 +10,9 @@ namespace Daily
 
     public sealed class SaveXDocument : DailyFileProperty
     {
-        private static SaveXDocument instance = new SaveXDocument();
+        private const string TASKS = "tasks";
 
+        private static SaveXDocument instance = new SaveXDocument();
 
         private SaveXDocument()
         {
@@ -21,11 +24,18 @@ namespace Daily
             return instance;
         }
 
-        public void Save(XDocument xDoc)
+        public void Save(PostActionRepo postActionRepo)
         {
-            if (xDoc != null)
+            
+            if (postActionRepo.XDoc != null && postActionRepo.TaskRepos != null)
             {
-                xDoc.Save(FilePath);
+                foreach (var task in postActionRepo.TaskRepos)
+                {
+                    task.Content=EncryptController.GetInstance().EncryptXDoc(task.Content);
+                    postActionRepo.XDoc.Element(TASKS).Add(task.GetXElement());
+
+                }
+                postActionRepo.XDoc.Save(FilePath);
             }
         }
     }
