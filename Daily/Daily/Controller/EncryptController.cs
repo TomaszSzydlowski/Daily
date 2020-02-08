@@ -2,8 +2,7 @@
 using Encryptor;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml.Linq;
+using System.Security;
 
 namespace Daily.Cryptography
 {
@@ -11,8 +10,10 @@ namespace Daily.Cryptography
     {
         private static EncryptController instance = new EncryptController();
 
-        private byte[] IV = Convert.FromBase64String(AppSettings.GetInstance().Read("IV"));
-        private byte[] Key = Convert.FromBase64String(AppSettings.GetInstance().Read("Key"));
+        private readonly byte[] IV = Convert.FromBase64String(AppSettings.GetInstance().Read("IV"));
+        private readonly byte[] Salt = Convert.FromBase64String(AppSettings.GetInstance().Read("Salt"));
+
+        public SecureString SecureString { private get; set; }
 
         private EncryptController()
         {
@@ -26,14 +27,23 @@ namespace Daily.Cryptography
 
         public string EncryptXDoc(string content)
         {
-            return Encryption.EncryptString(content, Key, IV);
+            var key = GetKey();
+            return Encryption.EncryptString(content, key, IV);
+        }
+
+        private byte[] GetKey()
+        {
+            var password = new System.Net.NetworkCredential(string.Empty, SecureString).Password;
+            var key = Encryption.CreateKey(password, Salt);
+            return key;
         }
 
         public void DecryptXDoc(List<TaskRepo> taskRepos)
         {
+            var key = GetKey();
             foreach (var taskRepo in taskRepos)
             {
-                taskRepo.Content = Encryption.DecryptString(taskRepo.Content, Key, IV);
+                taskRepo.Content = Encryption.DecryptString(taskRepo.Content, key, IV);
             }
         }
     }
