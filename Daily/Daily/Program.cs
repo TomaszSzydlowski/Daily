@@ -1,12 +1,42 @@
-﻿using System;
+﻿using Daily.Controller;
+using Daily.Helpers;
+using Daily.View;
+using System;
 
 namespace Daily
 {
     class Program
     {
+        private static ConsoleKey key;
+
         static void Main(string[] args)
         {
-            MainController.GetInstance().Start(args);
+            ViewBase.ShowWelcome();
+
+            var logIn = Account.GetInstance().LogIn();
+
+            do
+            {
+                if (logIn)
+                {
+                    var commands = Account.GetInstance().GetCommand();
+                    MainController.GetInstance().Start(commands);
+                }
+                else
+                {
+                    logIn = Account.GetInstance().LogIn();
+                }
+
+                ViewBase.ShowMessageAfterLogIn(logIn);
+
+                key = Console.ReadKey(true).Key;
+                ViewBase.ClearLine();
+
+            } while (key == ConsoleKey.Enter);
+
+            ViewBase.LogOutSuccess();
+
+            //EncryptHelper.EncryptAll();
         }
     }
 }

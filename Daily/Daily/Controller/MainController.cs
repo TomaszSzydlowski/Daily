@@ -1,4 +1,5 @@
 ﻿using Daily.Controller;
+using Daily.Cryptography;
 using Daily.Helpers;
 using Daily.Model;
 using System.Collections.Generic;
@@ -26,12 +27,15 @@ namespace Daily
             var validArg = ValidArg.Run(args);
             var postAction = Action(validArg);
 
-            Save(postAction.XDoc);
+            Save(postAction);
+
             View(validArg,postAction.TaskRepos);
         }
 
         private void View(IValidArg validArg, List<TaskRepo> taskRepos)
         {
+            EncryptController.GetInstance().DecryptXDoc(taskRepos);
+
             var view = ViewController.GetInstance().CreateView(validArg.Action);
             view.Show(taskRepos);
         }
@@ -45,9 +49,9 @@ namespace Daily
             return postAction;
         }
 
-        private void Save(XDocument xDoc)
+        private void Save(PostActionRepo postActionRepo)
         {
-            SaveXDocument.GetInstance().Save(xDoc);
+            SaveXDocument.GetInstance().Save(postActionRepo);
         }
     }
 }
