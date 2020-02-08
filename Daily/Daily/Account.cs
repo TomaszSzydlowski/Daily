@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Security;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Daily.Controller
 {
@@ -26,7 +27,8 @@ namespace Daily.Controller
                 EncryptController.GetInstance().SecureString = GetPassword();
 
                 var xDoc = GetXDocument.GetInstance().Get();
-                var postActionRepo = FindTasks.GetInstance().Exec(xDoc, "28");
+                var postActionRepo = FindFirstTask.GetInstance().Exec(xDoc);
+
                 EncryptController.GetInstance().DecryptXDoc(postActionRepo.TaskRepos);
 
                 ViewBase.LogInSuccess();
@@ -43,7 +45,7 @@ namespace Daily.Controller
             SecureString securePwd = new SecureString();
             ConsoleKeyInfo key;
 
-            Console.Write("\nEnter password: ");
+            Console.Write("Enter password: ");
             do
             {
                 key = Console.ReadKey(true);
@@ -57,7 +59,6 @@ namespace Daily.Controller
                 }
                 // Exit if Enter key is pressed.
             } while (key.Key != ConsoleKey.Enter);
-            Console.WriteLine();
             return securePwd;
         }
 

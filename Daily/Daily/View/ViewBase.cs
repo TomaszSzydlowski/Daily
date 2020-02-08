@@ -16,7 +16,7 @@ namespace Daily.View
         private const string PRESS_ENTER_TO_TRY_AGAIN = "Press enter to try again.";
         private const string WELCOME = "Welcome to the Daily program!";
 
-        private const string LOGGEDOUT = "Successfully logged out";
+        private const string LOGGEDOUT = "Successfully logged out. Bye!";
         private const string INVALID_PASSWORD = "The password given is incorrect. Try again.";
         private const string ERROR = "ERROR";
 
@@ -36,8 +36,9 @@ namespace Daily.View
 
         public static void LogInFailed()
         {
-            ConsoleWriteWithColorAndBrackets(ERROR, ConsoleColor.Red);
             ConsoleTab();
+            ConsoleWriteWithColorAndBrackets(ERROR, ConsoleColor.Red);
+            Console.WriteLine();
             Console.WriteLine(INVALID_PASSWORD);
 
         }
@@ -51,9 +52,11 @@ namespace Daily.View
 
         public static void LogInSuccess()
         {
-            ConsoleWriteWithColorAndBrackets(SUCCESS, ConsoleColor.Green);
             ConsoleTab();
+            ConsoleWriteWithColorAndBrackets(SUCCESS, ConsoleColor.Green);
+            Console.WriteLine();
             Console.WriteLine(LOGGEDIN);
+            Console.WriteLine();
         }
 
         public static void LogOutSuccess()
@@ -115,7 +118,7 @@ namespace Daily.View
             else
             {
                 Console.WriteLine();
-                Console.WriteLine(PRESS_ENTER_TO_TRY_AGAIN);
+                Console.Write(PRESS_ENTER_TO_TRY_AGAIN);
             }
         }
 
@@ -128,6 +131,7 @@ namespace Daily.View
         public static void ShowWelcome()
         {
             Console.WriteLine(WELCOME);
+            Console.WriteLine();
         }
     }
 }
