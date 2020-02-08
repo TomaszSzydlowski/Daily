@@ -26,16 +26,17 @@ namespace Daily
 
         public void Save(PostActionRepo postActionRepo)
         {
-            
+
             if (postActionRepo.XDoc != null && postActionRepo.TaskRepos != null)
             {
                 foreach (var task in postActionRepo.TaskRepos)
                 {
-                    task.Content=EncryptController.GetInstance().EncryptXDoc(task.Content);
+                    task.Content = EncryptController.GetInstance().EncryptXDoc(task.Content);
                     postActionRepo.XDoc.Element(TASKS).Add(task.GetXElement());
-
                 }
+
                 postActionRepo.XDoc.Save(FilePath);
+
             }
         }
     }

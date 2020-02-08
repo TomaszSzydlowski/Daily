@@ -1,6 +1,7 @@
 ﻿using Daily.Actions;
 using Daily.Controller;
 using Daily.Cryptography;
+using Daily.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,18 +40,10 @@ namespace Daily.Helpers
 
         private static void ShowProgress(int i, int count)
         {
-            ClearCurrentConsoleLine();
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
-            Console.WriteLine($"Encrypted {i}/{count}");
+            ViewBase.ClearLine();
+            Console.Write($"Encrypted {i}/{count}. Please wait...");
         }
 
-        public static void ClearCurrentConsoleLine()
-        {
-            int currentLineCursor = Console.CursorTop;
-            Console.SetCursorPosition(0, Console.CursorTop);
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, currentLineCursor);
-        }
 
 
     }

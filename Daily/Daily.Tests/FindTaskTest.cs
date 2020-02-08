@@ -70,7 +70,7 @@ namespace Daily.Tests
         public void FindPerformance_Pin()
         {
             Assert.That(GetBigXML().Descendants(Task).Count(), Is.EqualTo(30001));
-            Assert.That(Period(() => findTask.Exec(GetBigXML(), DateTimePerformance)), Is.LessThanOrEqualTo(TimeSpan.FromSeconds(0.1)));
+            Assert.That(Period(() => findTask.Exec(GetBigXML(), DateTimePerformance)), Is.LessThanOrEqualTo(TimeSpan.FromSeconds(0.15)));
         }
     }
 }
