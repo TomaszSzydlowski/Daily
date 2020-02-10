@@ -3,6 +3,7 @@ using Encryptor;
 using System;
 using System.Collections.Generic;
 using System.Security;
+using Daily.Helpers;
 
 namespace Daily.Cryptography
 {

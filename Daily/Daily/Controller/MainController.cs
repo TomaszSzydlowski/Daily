@@ -1,11 +1,11 @@
-﻿using Daily.Controller;
+﻿using Daily.Actions;
 using Daily.Cryptography;
 using Daily.Helpers;
 using Daily.Model;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Daily
+namespace Daily.Controller
 {
     public class MainController
     {

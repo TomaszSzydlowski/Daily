@@ -19,7 +19,9 @@ namespace Daily
             {
                 if (logIn)
                 {
-                    var commands = Account.GetInstance().GetCommand();
+                    var consoleService = new ConsoleWrapper();
+                    var commands = Account.GetInstance().GetCommand(consoleService);
+
                     MainController.GetInstance().Start(commands);
                 }
                 else
@@ -35,8 +37,6 @@ namespace Daily
             } while (key == ConsoleKey.Enter);
 
             ViewBase.LogOutSuccess();
-
-            //EncryptHelper.EncryptAll();
         }
     }
 }

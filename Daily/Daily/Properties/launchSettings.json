@@ -2,7 +2,7 @@
   "profiles": {
     "Daily": {
       "commandName": "Project",
-      "commandLineArgs": "add zdanie"
+      "commandLineArgs": "add \"bardzo dlugie zadanie\""
     }
   }
 }

@@ -1,7 +1,7 @@
 ﻿using Daily.Helpers;
 using System.Xml.Linq;
 
-namespace Daily
+namespace Daily.Actions
 {
 
     public sealed class GetXDocument : DailyFileProperty

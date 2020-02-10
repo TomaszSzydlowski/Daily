@@ -1,11 +1,11 @@
 ﻿using Daily.Actions;
 using Daily.Cryptography;
+using Daily.Helpers;
 using Daily.View;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security;
-using System.Text;
-using System.Xml.Linq;
 
 namespace Daily.Controller
 {
@@ -62,13 +62,58 @@ namespace Daily.Controller
             return securePwd;
         }
 
-        public string[] GetCommand()
+        public string[] GetCommand(IConsoleReadLine console)
         {
+            List<string> result = new List<string>();
+
             Console.Write("Command: ");
-            var commands = Console.ReadLine();
+            var command = console.ReadLine();
+            var content = GetStringBetweenChars(command);
+            var commandAction = RemoveStringBetweenChars(command);
             Console.WriteLine();
 
-            return commands.Split(' ');
+            if (!string.IsNullOrEmpty(command))
+            {
+                if (string.IsNullOrEmpty(commandAction))
+                {
+                    commandAction = command;
+                }
+
+                var commandActionResult = commandAction.Trim().Split(' ');
+                result.AddRange(commandActionResult);
+
+                if (!string.IsNullOrEmpty(content))
+                {
+                    result.Add(content);
+                }
+            }
+
+
+            return result.ToArray();
+        }
+
+        private string GetStringBetweenChars(string str)
+        {
+            if (str.Contains('"'))
+            {
+                int pFrom = str.IndexOf('"') + 1;
+                int pTo = str.LastIndexOf('"');
+
+                return str.Substring(pFrom, pTo - pFrom);
+            }
+            return null;
+        }
+
+        private string RemoveStringBetweenChars(string str)
+        {
+            if (str.Contains('"'))
+            {
+                int pFrom = str.IndexOf('"');
+                int pTo = str.LastIndexOf('"') + 1;
+
+                return str.Remove(pFrom, pTo - pFrom);
+            }
+            return null;
         }
     }
 }

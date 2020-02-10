@@ -1,11 +1,8 @@
 ﻿using Daily.Cryptography;
 using Daily.Helpers;
 using Daily.Model;
-using System;
-using System.Collections.Generic;
-using System.Xml.Linq;
 
-namespace Daily
+namespace Daily.Actions
 {
 
     public sealed class SaveXDocument : DailyFileProperty

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace Daily
+namespace Daily.Helpers
 {
     public sealed class AppSettings
     {

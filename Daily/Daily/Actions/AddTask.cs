@@ -3,7 +3,7 @@ using Daily.Model;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Daily
+namespace Daily.Actions
 {
 
     public sealed class AddTask : IActionBase

@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using System.Linq;
+﻿using Daily.Actions;
+using NUnit.Framework;
 
 namespace Daily.Tests
 {
