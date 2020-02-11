@@ -1,10 +1,9 @@
 ﻿using Daily.Actions;
 using Daily.Cryptography;
-using Daily.Helpers;
+using Daily.Helpers.Interfaces;
 using Daily.View;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security;
 
 namespace Daily.Controller
@@ -20,11 +19,11 @@ namespace Daily.Controller
             return instance;
         }
 
-        public bool LogIn()
+        public bool LogIn(IConsoleReadKey consoleReadKey)
         {
             try
             {
-                EncryptController.GetInstance().SecureString = GetPassword();
+                EncryptController.GetInstance().SecureString = GetPassword(consoleReadKey);
 
                 var xDoc = GetXDocument.GetInstance().Get();
                 var postActionRepo = FindFirstTask.GetInstance().Exec(xDoc);
@@ -40,7 +39,7 @@ namespace Daily.Controller
                 return false;
             }
         }
-        public SecureString GetPassword()
+        public SecureString GetPassword(IConsoleReadKey consoleReadKey)
         {
             SecureString securePwd = new SecureString();
             ConsoleKeyInfo key;
@@ -48,7 +47,7 @@ namespace Daily.Controller
             Console.Write("Enter password: ");
             do
             {
-                key = Console.ReadKey(true);
+                key = consoleReadKey.ReadKey(true);
 
                 // Ignore any key out of range.
                 if (((int)key.Key) >= 48 && ((int)key.Key <= 90))

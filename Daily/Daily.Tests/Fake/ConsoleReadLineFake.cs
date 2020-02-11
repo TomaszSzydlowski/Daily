@@ -1,12 +1,12 @@
-﻿using Daily.Helpers;
+﻿using Daily.Helpers.Interfaces;
 
 namespace Daily.Tests.Fake
 {
-    public class ConsoleFake : IConsoleReadLine
+    public class ConsoleReadLineFake : IConsoleReadLine
     {
         private readonly string _output;
 
-        public ConsoleFake(string output)
+        public ConsoleReadLineFake(string output)
         {
             _output = output;
         }

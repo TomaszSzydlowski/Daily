@@ -4,8 +4,6 @@ using Daily.Cryptography;
 using Daily.View;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
 namespace Daily.Helpers
@@ -24,7 +22,8 @@ namespace Daily.Helpers
             postActionRepo.XDoc = xDocToEncrypt;
             postActionRepo.XDoc.Descendants(TASK).Remove();
 
-            EncryptController.GetInstance().SecureString = Account.GetInstance().GetPassword();
+            var consoleService = new ConsoleWrapper();
+            EncryptController.GetInstance().SecureString = Account.GetInstance().GetPassword(consoleService);
 
             for (int i = 0; i < postActionRepo.TaskRepos.Count; i++)
             {

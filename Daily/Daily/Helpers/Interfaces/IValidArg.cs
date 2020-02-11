@@ -1,4 +1,4 @@
-﻿namespace Daily.Helpers
+﻿namespace Daily.Helpers.Interfaces
 {
     public interface IValidArg
     {
