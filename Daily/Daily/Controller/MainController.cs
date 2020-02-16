@@ -4,12 +4,15 @@ using Daily.Model;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Daily.Helpers.Interfaces;
+using Encryptor;
 
 namespace Daily.Controller
 {
     public class MainController : IMainController
     {
         private static MainController instance = new MainController();
+
+        private IEncryptController _encryptController { get => EncryptController.GetInstance(); }
         private XDocument XDoc { get => GetXDocument.GetInstance().Get(); }
 
         private MainController()
@@ -34,7 +37,7 @@ namespace Daily.Controller
 
         private void View(IValidArg validArg, List<TaskRepo> taskRepos)
         {
-            EncryptController.GetInstance().DecryptXDoc(taskRepos);
+            _encryptController.DecryptXDoc(taskRepos);
 
             var view = ViewController.GetInstance().CreateView(validArg.Action);
             view.Show(taskRepos);

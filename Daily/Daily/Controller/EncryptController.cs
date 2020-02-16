@@ -1,15 +1,17 @@
 ﻿using Daily.Model;
-using Encryptor;
 using System;
 using System.Collections.Generic;
 using System.Security;
 using Daily.Helpers;
 using Daily.Helpers.Interfaces;
+using Encryptor;
 
 namespace Daily.Controller
 {
     public sealed class EncryptController : IEncryptController
     {
+        private IEncryption _encryption { get => Encryption.GetInstance(); }
+
         private static EncryptController instance = new EncryptController();
 
         private readonly byte[] IV = Convert.FromBase64String(AppSettings.GetInstance().Read("IV"));
@@ -30,13 +32,13 @@ namespace Daily.Controller
         public string EncryptXDoc(string content)
         {
             var key = GetKey();
-            return Encryption.EncryptString(content, key, IV);
+            return _encryption.EncryptString(content, key, IV);
         }
 
         private byte[] GetKey()
         {
             var password = new System.Net.NetworkCredential(string.Empty, SecureString).Password;
-            var key = Encryption.CreateKey(password, Salt);
+            var key = _encryption.CreateKey(password, Salt);
             return key;
         }
 
@@ -45,7 +47,7 @@ namespace Daily.Controller
             var key = GetKey();
             foreach (var taskRepo in taskRepos)
             {
-                taskRepo.Content = Encryption.DecryptString(taskRepo.Content, key, IV);
+                taskRepo.Content = _encryption.DecryptString(taskRepo.Content, key, IV);
             }
         }
     }

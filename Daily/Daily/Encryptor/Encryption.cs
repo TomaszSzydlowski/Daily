@@ -1,13 +1,26 @@
-﻿using System;
+﻿using Daily.Helpers.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 
 namespace Encryptor
 {
-    public class Encryption
+    public sealed class Encryption : IEncryption
     {
-        public static string EncryptString(string input, byte[] key, byte[] IV)
+        private static Encryption instance = new Encryption();
+
+        private Encryption()
+        {
+
+        }
+
+        public static Encryption GetInstance()
+        {
+            return instance;
+        }
+
+        public string EncryptString(string input, byte[] key, byte[] IV)
         {
             using (RijndaelManaged RMCrypto = new RijndaelManaged())
             {
@@ -24,7 +37,7 @@ namespace Encryptor
             }
         }
 
-        public static string DecryptString(string input, byte[] key, byte[] IV)
+        public string DecryptString(string input, byte[] key, byte[] IV)
         {
             using (RijndaelManaged RMCrypto = new RijndaelManaged())
             {
@@ -43,7 +56,7 @@ namespace Encryptor
             }
         }
 
-        public static byte[] GenerateSalt()
+        public byte[] GenerateSalt()
         {
             List<byte> Salt = new List<byte>();
             Random rnd = new Random();
@@ -54,7 +67,7 @@ namespace Encryptor
             return Salt.ToArray();
         }
 
-        public static byte[] GenerateIV()
+        public byte[] GenerateIV()
         {
             List<byte> IV = new List<byte>();
             Random rnd = new Random();
@@ -65,19 +78,12 @@ namespace Encryptor
             return IV.ToArray();
         }
 
-        public static byte[] CreateKey(string InputKey, byte[] saltBytes)
+        public byte[] CreateKey(string InputKey, byte[] saltBytes)
         {
             using (var key = new Rfc2898DeriveBytes(InputKey, saltBytes, 1200000))
             {
                 return key.GetBytes(32);
             }
-        }
-
-        public static byte[] GetHMAC(byte[] hashdata, byte[] key)
-        {
-            HMACSHA512 hmac = new HMACSHA512();
-            hmac.Key = key;
-            return hmac.ComputeHash(hashdata);
         }
     }
 }
