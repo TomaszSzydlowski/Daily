@@ -1,30 +1,44 @@
 ﻿using Daily.Controller;
-using Daily.Tests.Fake;
+using Daily.Helpers.Interfaces;
+using Daily.Model;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Security.Cryptography;
+using System.Xml.Linq;
 
 namespace Daily.Tests
 {
     [TestFixture]
     public class AccountTest
     {
+        Mock<IConsoleReadKey> _fakeConsoleKey;
+        Mock<IConsoleReadLine> _fakeConsoleLine;
+        Mock<IGetXDocument> _fakeXDocument;
+        Mock<IActionBase> _fakeActionBase;
+        Mock<IEncryptController> _fakeEncryptController;
+
         Account account;
 
         [SetUp]
         public void Setup()
         {
-            account = Account.GetInstance();
+            _fakeConsoleKey = new Mock<IConsoleReadKey>();
+            _fakeConsoleLine = new Mock<IConsoleReadLine>();
+            _fakeXDocument = new Mock<IGetXDocument>();
+            _fakeActionBase = new Mock<IActionBase>();
+            _fakeEncryptController = new Mock<IEncryptController>();
+            account = Account.GetInstance(_fakeConsoleKey.Object,_fakeConsoleLine.Object, _fakeEncryptController.Object, _fakeXDocument.Object,_fakeActionBase.Object);
         }
 
         [Test]
         public void GetCommand_AddTask_ReturnCorrectStringTable()
         {
             //Arrange
-            var addCommand = "add newTask";
-            var console = new ConsoleReadLineFake(addCommand);
-            string[] result = account.GetCommand(console);
+            _fakeConsoleLine.Setup(x => x.ReadLine()).Returns("add newTask");
+            string[] result = account.GetCommand();
 
             //Assert
             Assert.That(result, Is.Not.Null);
@@ -36,9 +50,8 @@ namespace Daily.Tests
         public void GetCommand_AddTaskLongContent_ReturnCorrectStringTable()
         {
             //Arrange
-            var addCommandLong = "add \"Today i did a lot of thinks\"";
-            var console = new ConsoleReadLineFake(addCommandLong);
-            string[] result = account.GetCommand(console);
+            _fakeConsoleLine.Setup(x => x.ReadLine()).Returns("add \"Today i did a lot of thinks\"");
+            string[] result = account.GetCommand();
 
             //Assert
             Assert.That(result, Is.Not.Null);
@@ -50,9 +63,8 @@ namespace Daily.Tests
         public void GetCommand_FindTodayTask_ReturnCorrectStringTable()
         {
             //Arrange
-            var findTodayCommand = "find -t";
-            var console = new ConsoleReadLineFake(findTodayCommand);
-            string[] result = account.GetCommand(console);
+            _fakeConsoleLine.Setup(x => x.ReadLine()).Returns("find -t");
+            string[] result = account.GetCommand();
 
 
             //Assert
@@ -65,9 +77,8 @@ namespace Daily.Tests
         public void GetCommand_FindByDate_ReturnCorrectStringTable()
         {
             //Arrange
-            var findByDateCommand = "find 28/02/2019";
-            var console = new ConsoleReadLineFake(findByDateCommand);
-            string[] result = account.GetCommand(console);
+            _fakeConsoleLine.Setup(x => x.ReadLine()).Returns("find 28/02/2019");
+            string[] result = account.GetCommand();
 
             //Assert
             Assert.That(result, Is.Not.Null);
@@ -79,9 +90,13 @@ namespace Daily.Tests
         public void GetPassword_ReturnCorrectStringLength()
         {
             //Arrange
-            ConsoleReadKeyFake console = ArrangeConsoleReadKeyOutput();
+            _fakeConsoleKey.SetupSequence(x => x.ReadKey(It.IsAny<bool>()))
+                .Returns(new ConsoleKeyInfo('A', ConsoleKey.A, false, false, false))
+                .Returns(new ConsoleKeyInfo('B', ConsoleKey.B, false, false, false))
+                .Returns(new ConsoleKeyInfo((char)ConsoleKey.Enter, ConsoleKey.Enter, false, false, false));
 
-            SecureString result = account.GetPassword(console);
+            //Act
+            SecureString result = account.GetPassword();
             var password = new System.Net.NetworkCredential(string.Empty, result).Password;
 
             //Assert
@@ -90,31 +105,83 @@ namespace Daily.Tests
             Assert.That(password, Is.EqualTo("AB"));
         }
 
-        private ConsoleReadKeyFake ArrangeConsoleReadKeyOutput()
-        {
-            ConsoleKeyInfo a = new ConsoleKeyInfo('A', ConsoleKey.A, false, false, false);
-            ConsoleKeyInfo b = new ConsoleKeyInfo('B', ConsoleKey.B, false, false, false);
-            ConsoleKeyInfo enter = new ConsoleKeyInfo((char)ConsoleKey.Enter, ConsoleKey.Enter, false, false, false);
-
-            var consoleKeyInfoList = new List<ConsoleKeyInfo>();
-            consoleKeyInfoList.Add(a);
-            consoleKeyInfoList.Add(b);
-            consoleKeyInfoList.Add(enter);
-
-            var console = new ConsoleReadKeyFake(consoleKeyInfoList.ToArray());
-            return console;
-        }
-
         [Test]
-        public void LogIn_ReturnFalse()
+        public void LogIn_WrongPassword_ReturnFalse()
         {
             //Arrange
-            ConsoleReadKeyFake console = ArrangeConsoleReadKeyOutput();
+            _fakeConsoleKey.Setup(x => x.ReadKey(It.IsAny<bool>()))
+                .Returns(new ConsoleKeyInfo((char)ConsoleKey.Enter, ConsoleKey.Enter, false, false, false));
+            _fakeEncryptController.Setup(x => x.DecryptXDoc(It.IsAny<List<TaskRepo>>()))
+                .Throws(new CryptographicException());
+            _fakeActionBase.Setup(x => x.Exec(It.IsAny<XDocument>(), It.IsAny<string>()))
+                .Returns(new PostActionRepo
+                {
+                    TaskRepos = new List<TaskRepo>
+                    {
+                        new TaskRepo
+                        {
+                            Content="fake"
+                        }
+                    }
+                });
+
             //Act
-            var result = account.LogIn(console);
+            var result = account.LogIn();
 
             //Assert
             Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void LogIn_SomethingWentWrong_ReturnFalse()
+        {
+            //Arrange
+            _fakeConsoleKey.Setup(x => x.ReadKey(It.IsAny<bool>()))
+                .Returns(new ConsoleKeyInfo((char)ConsoleKey.Enter, ConsoleKey.Enter, false, false, false));
+            _fakeEncryptController.Setup(x => x.DecryptXDoc(It.IsAny<List<TaskRepo>>()))
+                .Throws(new Exception());
+            _fakeActionBase.Setup(x => x.Exec(It.IsAny<XDocument>(), It.IsAny<string>()))
+                .Returns(new PostActionRepo
+                {
+                    TaskRepos = new List<TaskRepo>
+                    {
+                        new TaskRepo
+                        {
+                            Content="fake"
+                        }
+                    }
+                });
+
+            //Act
+            var result = account.LogIn();
+
+            //Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void LogIn_CorrectPassword_ReturnTrue()
+        {
+            //Arrange
+            _fakeConsoleKey.Setup(x => x.ReadKey(It.IsAny<bool>()))
+                .Returns(new ConsoleKeyInfo((char)ConsoleKey.Enter, ConsoleKey.Enter, false, false, false));
+            _fakeActionBase.Setup(x => x.Exec(It.IsAny<XDocument>(), It.IsAny<string>()))
+                .Returns(new PostActionRepo
+                {
+                    TaskRepos = new List<TaskRepo>
+                    {
+                        new TaskRepo
+                        {
+                            Content="fake"
+                        }
+                    }
+                });
+
+            //Act
+            var result = account.LogIn();
+
+            //Assert
+            Assert.That(result, Is.True);
         }
     }
 }

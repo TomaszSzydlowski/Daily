@@ -19,6 +19,7 @@ namespace Daily.View
         private const string LOGGEDOUT = "Successfully logged out. Bye!";
         private const string INVALID_PASSWORD = "The password given is incorrect. Try again.";
         private const string ERROR = "ERROR";
+        private const string SOMETHING_WENT_WRONG_TRY_AGAIN = "Something went wrong. Try again..";
 
         public static void ConsoleWriteLineWithColor(string message, ConsoleColor consoleColor)
         {
@@ -48,6 +49,14 @@ namespace Daily.View
             Console.Write("[");
             ConsoleWriteWithColor(message, consoleColor);
             Console.WriteLine("]");
+        }
+
+        internal static void SomethingWentWrong()
+        {
+            ConsoleTab();
+            ConsoleWriteWithColorAndBrackets(ERROR, ConsoleColor.Red);
+            Console.WriteLine();
+            Console.WriteLine(SOMETHING_WENT_WRONG_TRY_AGAIN);
         }
 
         public static void LogInSuccess()

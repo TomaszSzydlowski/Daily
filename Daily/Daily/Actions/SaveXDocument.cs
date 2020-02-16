@@ -1,4 +1,4 @@
-﻿using Daily.Cryptography;
+﻿using Daily.Controller;
 using Daily.Helpers;
 using Daily.Model;
 

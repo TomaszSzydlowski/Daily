@@ -1,4 +1,5 @@
-﻿using Daily.Model;
+﻿using Daily.Helpers.Interfaces;
+using Daily.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;

@@ -1,45 +1,62 @@
-﻿using Daily.Actions;
-using Daily.Cryptography;
-using Daily.Helpers.Interfaces;
+﻿using Daily.Helpers.Interfaces;
 using Daily.View;
 using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Security.Cryptography;
 
 namespace Daily.Controller
 {
-    public class Account
+    public class Account : IAccount
     {
+        private static IConsoleReadKey _consoleKey;
+        private static IConsoleReadLine _consoleLine;
+        private static IEncryptController _encryptController;
+        private static IGetXDocument _xDocument;
+        private static IActionBase _actionBase;
+
         private static Account instance = new Account();
 
         private Account() { }
 
-        public static Account GetInstance()
+        public static Account GetInstance(IConsoleReadKey consoleKey, IConsoleReadLine consoleLine, IEncryptController encryptController, IGetXDocument xDocument, IActionBase actionBase)
         {
+            _consoleKey = consoleKey;
+            _consoleLine = consoleLine;
+            _encryptController = encryptController;
+            _xDocument = xDocument;
+            _actionBase = actionBase;
+
             return instance;
         }
 
-        public bool LogIn(IConsoleReadKey consoleReadKey)
+        public bool LogIn()
         {
             try
             {
-                EncryptController.GetInstance().SecureString = GetPassword(consoleReadKey);
+                _encryptController.SecureString = GetPassword();
 
-                var xDoc = GetXDocument.GetInstance().Get();
-                var postActionRepo = FindFirstTask.GetInstance().Exec(xDoc);
+                var xDoc = _xDocument.Get();
+                var postActionRepo = _actionBase.Exec(xDoc);
 
-                EncryptController.GetInstance().DecryptXDoc(postActionRepo.TaskRepos);
+                _encryptController.DecryptXDoc(postActionRepo.TaskRepos);
 
                 ViewBase.LogInSuccess();
                 return true;
             }
-            catch (Exception)
+            catch (CryptographicException)
             {
                 ViewBase.LogInFailed();
                 return false;
             }
+            catch (Exception ex)
+            {
+                ViewBase.SomethingWentWrong();
+                Console.WriteLine(ex);
+                return false;
+            }
         }
-        public SecureString GetPassword(IConsoleReadKey consoleReadKey)
+        public SecureString GetPassword()
         {
             SecureString securePwd = new SecureString();
             ConsoleKeyInfo key;
@@ -47,7 +64,7 @@ namespace Daily.Controller
             Console.Write("Enter password: ");
             do
             {
-                key = consoleReadKey.ReadKey(true);
+                key = _consoleKey.ReadKey(true);
 
                 // Ignore any key out of range.
                 if (((int)key.Key) >= 48 && ((int)key.Key <= 90))
@@ -61,12 +78,12 @@ namespace Daily.Controller
             return securePwd;
         }
 
-        public string[] GetCommand(IConsoleReadLine console)
+        public string[] GetCommand()
         {
             List<string> result = new List<string>();
 
             Console.Write("Command: ");
-            var command = console.ReadLine();
+            var command = _consoleLine.ReadLine();
             var content = GetStringBetweenChars(command);
             var commandAction = RemoveStringBetweenChars(command);
             Console.WriteLine();

@@ -1,10 +1,11 @@
 ﻿using Daily.Helpers;
+using Daily.Helpers.Interfaces;
 using System.Xml.Linq;
 
 namespace Daily.Actions
 {
 
-    public sealed class GetXDocument : DailyFileProperty
+    public sealed class GetXDocument : DailyFileProperty, IGetXDocument
     {
         private static GetXDocument instance = new GetXDocument();
 

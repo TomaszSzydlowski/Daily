@@ -1,5 +1,4 @@
 ﻿using Daily.Actions;
-using Daily.Cryptography;
 using Daily.Helpers;
 using Daily.Model;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using Daily.Helpers.Interfaces;
 
 namespace Daily.Controller
 {
-    public class MainController
+    public class MainController : IMainController
     {
         private static MainController instance = new MainController();
         private XDocument XDoc { get => GetXDocument.GetInstance().Get(); }
@@ -30,7 +29,7 @@ namespace Daily.Controller
 
             Save(postAction);
 
-            View(validArg,postAction.TaskRepos);
+            View(validArg, postAction.TaskRepos);
         }
 
         private void View(IValidArg validArg, List<TaskRepo> taskRepos)

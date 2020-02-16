@@ -1,4 +1,5 @@
-﻿using Daily.Model;
+﻿using Daily.Helpers.Interfaces;
+using Daily.Model;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Security;
 using Daily.Helpers;
+using Daily.Helpers.Interfaces;
 
-namespace Daily.Cryptography
+namespace Daily.Controller
 {
-    public sealed class EncryptController
+    public sealed class EncryptController : IEncryptController
     {
         private static EncryptController instance = new EncryptController();
 

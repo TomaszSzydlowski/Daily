@@ -1,5 +1,5 @@
-﻿using Daily.Actions;
-using Daily.Helpers;
+﻿using Daily.Helpers;
+using Daily.Helpers.Interfaces;
 
 namespace Daily.Controller
 {
